@@ -180,6 +180,11 @@ GtkWidget * createMenuBar(CSIde_app *app,GtkAccelGroup *accel_group)
 	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
 	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_tool_bar_clicked ),(gpointer) app);
 
+	menuItem	= gtk_menu_item_new_with_label ("Font");
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_F,GDK_CONTROL_MASK | GDK_SHIFT_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_font_clicked ),(gpointer) app);
+
 
 
 	menuItem	= gtk_menu_item_new_with_label ("View");

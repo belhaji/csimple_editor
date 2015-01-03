@@ -165,6 +165,25 @@ void menu_item_tool_bar_clicked(GtkWidget *wid,gpointer data){
 		gtk_widget_hide(app->main_toolbar);	
 }
 
+void menu_item_font_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app   *app = (CSIde_app*) data;
+	PangoFontDescription *fontDesc;
+	gchar *font_name;
+	GtkWidget *fontDialog;
+	fontDialog = gtk_font_chooser_dialog_new ("Choose a font",GTK_WINDOW(app->main_window));
+	gint result = gtk_dialog_run(GTK_DIALOG(fontDialog));
+	if(result == GTK_RESPONSE_CANCEL)
+		gtk_widget_destroy(fontDialog);
+	else{
+		font_name = gtk_font_chooser_get_font (GTK_FONT_CHOOSER(fontDialog));
+		fontDesc = pango_font_description_from_string (font_name);
+		gtk_widget_override_font (app->editor->source_view,fontDesc);
+		pango_font_description_free (fontDesc);
+		g_free(font_name);
+		gtk_widget_destroy(fontDialog);
+	}
+
+}
 
 
 void menu_item_about_clicked(GtkWidget *wid,gpointer data){

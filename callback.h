@@ -74,6 +74,8 @@ void menu_item_highlight_line_clicked(GtkWidget *wid,gpointer data);
 
 void menu_item_tool_bar_clicked(GtkWidget *wid,gpointer data);
 
+void menu_item_font_clicked(GtkWidget *wid,gpointer data);
+
 
 
 void menu_item_about_clicked(GtkWidget *wid,gpointer data);
