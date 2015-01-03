@@ -36,6 +36,8 @@ int main(int argc,char **argv){
 	app->main_toolbar   = createToolBar (app);
 	app->editor		= editor_create(app);
 	main_vbox		= gtk_box_new (GTK_ORIENTATION_VERTICAL,0);
+
+	gtk_container_set_focus_child (GTK_CONTAINER(app->main_window),app->editor->source_view);
 	
 	gtk_window_add_accel_group (GTK_WINDOW(app->main_window),accelGroup);
 	g_signal_connect(G_OBJECT(app->main_window),"delete-event",G_CALLBACK(mainWindowDeleteEvent),(gpointer)app);

@@ -1,4 +1,4 @@
-OBJ_FILES=csimpleide.o main_window.o main.o callback.o main_menu.o main_tool_bar.o editor.o actions.o
+OBJ_FILES=csimpleide.o main_window.o main.o callback.o main_menu.o main_tool_bar.o editor.o actions.o search_box.o
 
 CC=gcc
 
@@ -12,7 +12,7 @@ csimpleide  :   $(OBJ_FILES)
 main.o		:   main.c
 	   $(CC) -c main.c $(CFLAGS) $(CLIBS)
 
-csimpleide.o:   csimpleide.c
+csimpleide.o :   csimpleide.c
 	   $(CC) -c csimpleide.c $(CFLAGS) $(CLIBS)
 
 main_window.o		:   main_window.c
@@ -32,6 +32,9 @@ editor.o		:   editor.c
 
 actions.o		:   actions.c
 	   $(CC) -c actions.c $(CFLAGS) $(CLIBS)
+
+search_box.o	:   search_box.c
+	   $(CC) -c search_box.c $(CFLAGS) $(CLIBS)
 
 clean : 
 	rm -rf *.o

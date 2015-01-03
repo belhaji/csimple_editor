@@ -34,6 +34,7 @@ GtkWidget * createMenuBar(CSIde_app *app,GtkAccelGroup *accel_group)
 	GtkWidget *menuFile;
 	GtkWidget *menuEdit;
 	GtkWidget *menuChangeCase;
+	GtkWidget *menuView;
 	GtkWidget *menuHelp;
 	GtkWidget *menuBar;
 
@@ -41,6 +42,7 @@ GtkWidget * createMenuBar(CSIde_app *app,GtkAccelGroup *accel_group)
 	menuBar			= gtk_menu_bar_new ();
 	menuFile		= gtk_menu_new ();
 	menuEdit		= gtk_menu_new ();
+	menuView		= gtk_menu_new ();
 	menuHelp		= gtk_menu_new ();
 	menuChangeCase	= gtk_menu_new ();
 
@@ -141,11 +143,48 @@ GtkWidget * createMenuBar(CSIde_app *app,GtkAccelGroup *accel_group)
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(menuItem),menuChangeCase);
 	gtk_menu_shell_append (GTK_MENU_SHELL(menuEdit),menuItem);
 	
+	menuItem	= gtk_menu_item_new_with_label ("Find/Replace");
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_F,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuEdit),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_find_clicked ),(gpointer) app);
+
 	menuItem	= gtk_menu_item_new_with_label ("Edit");
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuItem),menuEdit);
 	gtk_menu_shell_append (GTK_MENU_SHELL(menuBar),menuItem);
 
 
+	menuItem	= gtk_check_menu_item_new_with_label ("Line Numbers");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuItem),TRUE); 
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_L,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_line_number_clicked ),(gpointer) app);
+
+
+	menuItem	= gtk_check_menu_item_new_with_label ("Auto Indent");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuItem),TRUE); 
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_I,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_auto_indent_clicked ),(gpointer) app);
+
+
+	menuItem	= gtk_check_menu_item_new_with_label ("highlight line");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuItem),TRUE); 
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_H,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_highlight_line_clicked ),(gpointer) app);
+
+
+	menuItem	= gtk_check_menu_item_new_with_label ("Tool Bar");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuItem),TRUE); 
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_T,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_tool_bar_clicked ),(gpointer) app);
+
+
+
+	menuItem	= gtk_menu_item_new_with_label ("View");
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuItem),menuView);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuBar),menuItem);
 	
 
 	menuItem	= gtk_menu_item_new_with_label ("About");

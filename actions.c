@@ -209,11 +209,12 @@ void quit_app(CSIde_app *app){
 	{
 		GtkWidget * msgDialog;
 		msgDialog = gtk_message_dialog_new(GTK_WINDOW(app->main_window),
-		                                   GTK_DIALOG_MODAL,
+		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
 		                                   GTK_MESSAGE_WARNING,
 		                                   GTK_BUTTONS_YES_NO,
 		                                   "Do you want save your file ?",
 		                                   NULL);
+		gtk_dialog_add_button (GTK_DIALOG(msgDialog),"Cancel",GTK_RESPONSE_CANCEL);
 
 		switch (gtk_dialog_run (GTK_DIALOG(msgDialog)))
 		{
@@ -234,8 +235,10 @@ void quit_app(CSIde_app *app){
 			case GTK_RESPONSE_NO:
 				gtk_widget_destroy(msgDialog);
 				gtk_main_quit ();
-
-
+				break;
+			default :
+				gtk_widget_destroy(msgDialog);
+				break;
 		}
 	}else{
 		gtk_main_quit();

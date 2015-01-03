@@ -63,10 +63,23 @@ void menu_item_to_upper_clicked(GtkWidget *wid,gpointer data);
 
 void menu_item_to_lower_clicked(GtkWidget *wid,gpointer data);
 
+void menu_item_find_clicked(GtkWidget *wid,gpointer data);
+
+
+void menu_item_line_number_clicked(GtkWidget *wid,gpointer data);
+
+void menu_item_auto_indent_clicked(GtkWidget *wid,gpointer data);
+
+void menu_item_highlight_line_clicked(GtkWidget *wid,gpointer data);
+
+void menu_item_tool_bar_clicked(GtkWidget *wid,gpointer data);
+
 
 
 void menu_item_about_clicked(GtkWidget *wid,gpointer data);
 
 void mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data);
+
+void buffer_changed(GtkWidget *wid,gpointer data);
 
 #endif /* CALLBACK_H */

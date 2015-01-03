@@ -26,6 +26,7 @@
 
 #include "editor.h"
 #include <gtksourceview/gtksourceview.h>
+#include "callback.h"
 
 
 Editor * editor_create(CSIde_app *app){
@@ -37,11 +38,10 @@ Editor * editor_create(CSIde_app *app){
 
 	editor->scrolled_window = gtk_scrolled_window_new (NULL,NULL);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(editor->scrolled_window ),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
-
 	buffer  = gtk_source_buffer_new (NULL);
 	langm   = gtk_source_language_manager_new ();
 	lang	= gtk_source_language_manager_get_language (langm,"csimple");
-
+	g_signal_connect(buffer,"changed",G_CALLBACK(buffer_changed),app);
 	editor->buffer = buffer;
 	editor->source_view = gtk_source_view_new_with_buffer (buffer);
 	gtk_source_view_set_auto_indent (GTK_SOURCE_VIEW(editor->source_view),TRUE);

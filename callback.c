@@ -26,6 +26,7 @@
 #include "callback.h"
 #include "actions.h"
 #include "csimpleide.h"
+#include "search_box.h"
 
 
 void menu_item_new_clicked(GtkWidget *wid,gpointer data)
@@ -133,6 +134,38 @@ void menu_item_to_lower_clicked(GtkWidget *wid,gpointer data){
 
 }
 
+void menu_item_find_clicked(GtkWidget *wid,gpointer data){
+	search_box((CSIde_app*) data);
+}
+
+void menu_item_line_number_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	gboolean show_numbers = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
+	gtk_source_view_set_show_line_numbers(GTK_SOURCE_VIEW(app->editor->source_view),show_numbers);
+}
+
+void menu_item_auto_indent_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	gboolean auto_indent = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
+	gtk_source_view_set_auto_indent(GTK_SOURCE_VIEW(app->editor->source_view),auto_indent);
+}
+
+void menu_item_highlight_line_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	gboolean highlight_line = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
+	gtk_source_view_set_highlight_current_line(GTK_SOURCE_VIEW(app->editor->source_view),highlight_line);
+}
+
+void menu_item_tool_bar_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	gboolean show_tool_bar = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
+	if(show_tool_bar)
+		gtk_widget_show(app->main_toolbar);	
+	else
+		gtk_widget_hide(app->main_toolbar);	
+}
+
+
 
 void menu_item_about_clicked(GtkWidget *wid,gpointer data){
 	CSIde_app   *app = (CSIde_app*) data;
@@ -154,4 +187,9 @@ void menu_item_about_clicked(GtkWidget *wid,gpointer data){
 void mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data)
 {
 	quit_app ((CSIde_app*) data);	
+}
+
+void buffer_changed(GtkWidget *wid,gpointer data){
+	CSIde_app *app= (CSIde_app*) data;
+	app->doc->isSaved = FALSE;
 }
