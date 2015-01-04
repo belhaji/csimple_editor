@@ -1,28 +1,20 @@
-/***************************************************************************
- *            callback.c
- *
- *  Sun December 21 14:25:40 2014
- *  Copyright  2014  adil belhaji
- *  <user@host>
- ****************************************************************************/
 /*
- * callback.c
- *
- * Copyright (C) 2014 - adil belhaji
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * Copyright (C) 2014 adil belhaji <belhaji.dev@gmail.com>
+ * 
+ * csimple_editor is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * csimple_editor is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
 #include "callback.h"
 #include "actions.h"
 #include "csimpleide.h"
@@ -170,7 +162,19 @@ void menu_item_font_clicked(GtkWidget *wid,gpointer data){
 	PangoFontDescription *fontDesc;
 	gchar *font_name;
 	GtkWidget *fontDialog;
+	gchar *filename;
+	
+	filename =(gchar*) g_malloc(sizeof(gchar)*100);
+	sprintf(filename,"%s/"CONFIG_FILE,g_get_home_dir());
+
 	fontDialog = gtk_font_chooser_dialog_new ("Choose a font",GTK_WINDOW(app->main_window));
+	if(g_file_test (filename,G_FILE_TEST_EXISTS)){
+		g_file_get_contents (filename,&font_name,NULL,NULL);
+		gtk_font_chooser_set_font (GTK_FONT_CHOOSER(fontDialog),font_name);
+		g_free(font_name);
+	}
+
+
 	gint result = gtk_dialog_run(GTK_DIALOG(fontDialog));
 	if(result == GTK_RESPONSE_CANCEL)
 		gtk_widget_destroy(fontDialog);
@@ -179,10 +183,22 @@ void menu_item_font_clicked(GtkWidget *wid,gpointer data){
 		fontDesc = pango_font_description_from_string (font_name);
 		gtk_widget_override_font (app->editor->source_view,fontDesc);
 		pango_font_description_free (fontDesc);
+		g_file_set_contents (filename,font_name,-1,NULL);
 		g_free(font_name);
 		gtk_widget_destroy(fontDialog);
 	}
+	g_free(filename);
+	
+}
 
+
+void menu_item_terminal_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	gboolean show_tool_bar = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
+	if(show_tool_bar)
+		gtk_widget_show_all(app->terminal->scrolled_window);	
+	else
+		gtk_widget_hide(app->terminal->scrolled_window);	
 }
 
 
@@ -203,9 +219,10 @@ void menu_item_about_clicked(GtkWidget *wid,gpointer data){
 	gtk_widget_destroy(aboutDialog);
 }
 
-void mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data)
+gboolean mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data)
 {
 	quit_app ((CSIde_app*) data);	
+	return TRUE;
 }
 
 void buffer_changed(GtkWidget *wid,gpointer data){

@@ -15,20 +15,15 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef TERMINAL_H
+#define TERMINAL_H
+
 #include "csimpleide.h"
 
-/* define app functions for initialization */
 
-CSIde_app *cside_app_new(void){
-	CSIde_app *app  = (CSIde_app*)  g_slice_new(CSIde_app);
-	Editor *editor  = (Editor*) g_slice_new(Editor);
-	Document *doc  = (Document*) g_slice_new(Document);
-	Terminal *terminal  = (Terminal*) g_slice_new(Terminal);
-	app->editor = editor;
-	doc->name   = NULL;
-	doc->isSaved	= FALSE;
-	doc->isOnDisk   = FALSE;
-	app->doc	= doc;
-	app->terminal = terminal;
-	return app;
-}
+Terminal * main_terminal_new(CSIde_app *app);
+
+
+
+
+ #endif /* TERMINAL_H */

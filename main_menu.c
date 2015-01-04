@@ -1,27 +1,18 @@
-/***************************************************************************
- *            main_menu.c
- *
- *  Sun December 21 14:13:54 2014
- *  Copyright  2014  adil belhaji
- *  <user@host>
- ****************************************************************************/
 /*
- * main_menu.c
- *
- * Copyright (C) 2014 - adil belhaji
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * Copyright (C) 2014 adil belhaji <belhaji.dev@gmail.com>
+ * 
+ * csimple_editor is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * csimple_editor is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "main_menu.h"
@@ -179,6 +170,15 @@ GtkWidget * createMenuBar(CSIde_app *app,GtkAccelGroup *accel_group)
 	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_T,GDK_CONTROL_MASK ,GTK_ACCEL_VISIBLE);
 	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
 	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_tool_bar_clicked ),(gpointer) app);
+
+
+	menuItem	= gtk_check_menu_item_new_with_label ("Terminal");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menuItem),TRUE); 
+	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_T,GDK_CONTROL_MASK | GDK_SHIFT_MASK ,GTK_ACCEL_VISIBLE);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menuView),menuItem);
+	g_signal_connect(G_OBJECT(menuItem),"activate",G_CALLBACK(menu_item_terminal_clicked ),(gpointer) app);
+
+
 
 	menuItem	= gtk_menu_item_new_with_label ("Font");
 	gtk_widget_add_accelerator (menuItem,"activate",accel_group,GDK_KEY_F,GDK_CONTROL_MASK | GDK_SHIFT_MASK ,GTK_ACCEL_VISIBLE);

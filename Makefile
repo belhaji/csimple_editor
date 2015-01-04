@@ -1,10 +1,10 @@
-OBJ_FILES=csimpleide.o main_window.o main.o callback.o main_menu.o main_tool_bar.o editor.o actions.o search_box.o
+OBJ_FILES=csimpleide.o main_window.o main.o callback.o main_menu.o main_tool_bar.o editor.o actions.o search_box.o terminal.o
 
 CC=gcc
 
-CFLAGS= `pkg-config --cflags gtk+-3.0 gtksourceview-3.0`
+CFLAGS= `pkg-config --cflags gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
-CLIBS=`pkg-config --libs gtk+-3.0 gtksourceview-3.0`
+CLIBS=`pkg-config --libs gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
 csimpleide  :   $(OBJ_FILES)
 	$(CC) -o csimpleide $(OBJ_FILES) $(CFLAGS) $(CLIBS)
@@ -35,6 +35,9 @@ actions.o		:   actions.c
 
 search_box.o	:   search_box.c
 	   $(CC) -c search_box.c $(CFLAGS) $(CLIBS)
+
+terminal.o	:   terminal.c
+	   $(CC) -c terminal.c $(CFLAGS) $(CLIBS)
 
 clean : 
 	rm -rf *.o
