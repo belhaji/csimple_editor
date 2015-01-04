@@ -130,6 +130,43 @@ void menu_item_find_clicked(GtkWidget *wid,gpointer data){
 	search_box((CSIde_app*) data);
 }
 
+
+
+
+void menu_item_compile_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	menu_item_save_clicked(NULL,data);
+	if (app->doc->name != NULL )
+	{
+		gtk_widget_show_all(app->terminal->scrolled_window);
+		compile_file(app);
+	}else{
+		if (app->doc->name != NULL){
+			gtk_widget_show_all(app->terminal->scrolled_window);
+			compile_file(app);
+		}
+	}
+}
+
+void menu_item_execute_clicked(GtkWidget *wid,gpointer data){
+	CSIde_app *app = (CSIde_app*) data;
+	if(g_file_test (app->doc->bin_name,G_FILE_TEST_EXISTS)){
+		terminal_box(app);
+		g_remove (app->doc->bin_name);
+	}else{
+		GtkWidget * msgDialog;
+		msgDialog = gtk_message_dialog_new(GTK_WINDOW(app->main_window),
+		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
+		                                   GTK_MESSAGE_WARNING,
+		                                   GTK_BUTTONS_OK,
+		                                   "Make sure that your file is compiled",
+		                                   NULL);
+		gtk_dialog_run (GTK_DIALOG(msgDialog));
+		gtk_widget_destroy(msgDialog);
+	}
+}
+
+
 void menu_item_line_number_clicked(GtkWidget *wid,gpointer data){
 	CSIde_app *app = (CSIde_app*) data;
 	gboolean show_numbers = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(wid)); 
@@ -229,3 +266,25 @@ void buffer_changed(GtkWidget *wid,gpointer data){
 	CSIde_app *app= (CSIde_app*) data;
 	app->doc->isSaved = FALSE;
 }
+
+void vte_child_exited(GtkWidget *vte,gpointer data){
+	CSIde_app *app= (CSIde_app*) data;
+	vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
+
+}
+
+
+
+void terminal_window_distroy(GtkWidget *wid,gpointer data){
+	TerminalBox *tb = (TerminalBox*) data;
+	gtk_widget_destroy(tb->vte);
+	gtk_widget_destroy(tb->scrolled_window);
+	gtk_widget_destroy(tb->terminal_window);
+}
+
+
+
+
+
+
+

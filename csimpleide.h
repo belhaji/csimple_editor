@@ -51,6 +51,7 @@ typedef struct {
 
 typedef struct {
 	gchar *name;
+	gchar *bin_name;
 	gboolean isSaved;
 	gboolean isOnDisk;
 }Document;
@@ -68,6 +69,14 @@ typedef struct {
 	Editor *editor;
 	Document *doc;
 } CSIde_app ;
+
+typedef struct {
+	GtkWidget *vte;
+	GtkWidget *scrolled_window;
+	GtkWidget *terminal_window;
+} TerminalBox ;
+
+
 
 
 

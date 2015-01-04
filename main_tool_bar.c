@@ -33,7 +33,9 @@ GtkWidget * createToolBar(CSIde_app *app)
 				*btnDelete,
 				*btnSelectAll,
 				*separator,
-				*btnSearch;
+				*btnSearch,
+				*btnExecute,
+				*btnCompile;
 
 	toolBar			= gtk_toolbar_new ();
 	gtk_toolbar_set_style(GTK_TOOLBAR(toolBar),GTK_TOOLBAR_ICONS);
@@ -50,6 +52,9 @@ GtkWidget * createToolBar(CSIde_app *app)
 	btnDelete		= gtk_tool_button_new_from_stock (GTK_STOCK_DELETE);
 	btnSelectAll	= gtk_tool_button_new_from_stock (GTK_STOCK_SELECT_ALL);
 	btnSearch		= gtk_tool_button_new_from_stock (GTK_STOCK_FIND);
+	btnCompile		= gtk_tool_button_new_from_stock (GTK_STOCK_PROPERTIES);
+	btnExecute		= gtk_tool_button_new_from_stock (GTK_STOCK_EXECUTE);
+
 
 	separator = gtk_separator_tool_item_new ();
 	
@@ -64,6 +69,8 @@ GtkWidget * createToolBar(CSIde_app *app)
 	g_signal_connect(G_OBJECT(btnDelete),"clicked",G_CALLBACK(menu_item_delete_clicked),(gpointer) app);
 	g_signal_connect(G_OBJECT(btnSelectAll),"clicked",G_CALLBACK(menu_item_select_all_clicked),(gpointer) app);
 	g_signal_connect(G_OBJECT(btnSearch),"clicked",G_CALLBACK(menu_item_find_clicked),(gpointer) app);
+	g_signal_connect(G_OBJECT(btnCompile),"clicked",G_CALLBACK(menu_item_compile_clicked),(gpointer) app);
+	g_signal_connect(G_OBJECT(btnExecute),"clicked",G_CALLBACK(menu_item_execute_clicked),(gpointer) app);
 
 	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnNew,0);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnOpen,1);
@@ -77,7 +84,12 @@ GtkWidget * createToolBar(CSIde_app *app)
 	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnDelete,9);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnSelectAll,10);
 	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnSearch,11);
-	
+
+	separator = gtk_separator_tool_item_new ();
+	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),separator,12);
+	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnCompile,13);
+	gtk_toolbar_insert (GTK_TOOLBAR(toolBar),btnExecute,14);
+
 
 	                 
 	return toolBar;

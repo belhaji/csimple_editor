@@ -59,6 +59,12 @@ void menu_item_to_lower_clicked(GtkWidget *wid,gpointer data);
 void menu_item_find_clicked(GtkWidget *wid,gpointer data);
 
 
+void menu_item_compile_clicked(GtkWidget *wid,gpointer data);
+
+void menu_item_execute_clicked(GtkWidget *wid,gpointer data);
+
+
+
 void menu_item_line_number_clicked(GtkWidget *wid,gpointer data);
 
 void menu_item_auto_indent_clicked(GtkWidget *wid,gpointer data);
@@ -77,5 +83,9 @@ void menu_item_about_clicked(GtkWidget *wid,gpointer data);
 gboolean mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data);
 
 void buffer_changed(GtkWidget *wid,gpointer data);
+
+void vte_child_exited(GtkWidget *vte,gpointer data);
+
+void terminal_window_distroy(GtkWidget *wid,gpointer data);
 
 #endif /* CALLBACK_H */

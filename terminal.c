@@ -17,6 +17,7 @@
 
 
 #include "terminal.h"
+#include "callback.h"
 
 
 Terminal * main_terminal_new(CSIde_app *app){
@@ -28,6 +29,9 @@ Terminal * main_terminal_new(CSIde_app *app){
 	vte_terminal_fork_command(VTE_TERMINAL(terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
 	vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL (terminal->vte), TRUE);
 	vte_terminal_set_allow_bold (VTE_TERMINAL (terminal->vte),TRUE);
+	g_signal_connect(G_OBJECT(terminal->vte), "child-exited",G_CALLBACK(vte_child_exited),(gpointer) app);
+
+
 	gtk_container_set_border_width(GTK_CONTAINER(terminal->scrolled_window),5);
 	gtk_container_add (GTK_CONTAINER(terminal->scrolled_window),terminal->vte);
 

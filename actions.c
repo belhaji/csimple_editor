@@ -16,6 +16,7 @@
  */
 
 #include "actions.h"
+#include "callback.h"
 #include <string.h>
 
 void new_file(CSIde_app *app){
@@ -63,6 +64,7 @@ void new_file(CSIde_app *app){
 		
 	app->doc->isSaved	= FALSE;
 	app->doc->name		= NULL;
+	app->doc->bin_name	= NULL;
 	app->doc->isOnDisk	= FALSE;
 
 }
@@ -117,6 +119,7 @@ void open_file(CSIde_app *app){
 		case GTK_RESPONSE_OK:
 			fileName		= gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(dialog));
 			app->doc->name	= fileName;
+			app->doc->bin_name = get_bin_name(fileName);
 			g_file_get_contents(fileName,&text,&lenText,&error);
 			if(text == NULL)
 			{
@@ -180,6 +183,7 @@ void save_file_as(CSIde_app *app){
 			save_file(app);
 			app->doc->isSaved  = TRUE;
 			app->doc->isOnDisk = TRUE;
+			app->doc->bin_name = get_bin_name(app->doc->name);
 			break;
 			
 	}
@@ -236,3 +240,50 @@ void quit_app(CSIde_app *app){
 	}
 
 }
+
+gchar* get_bin_name(gchar *filename){
+	
+	gchar *bin_name  = (gchar*) g_malloc(sizeof(gchar) * (strlen(filename)+5));
+	if (bin_name != NULL)
+	{
+		g_sprintf (bin_name,"%s.bin",filename);
+	}
+	return bin_name;
+}
+
+void compile_file(CSIde_app *app){
+	gchar *cmd_args[] = {"gcc","-o",app->doc->bin_name,app->doc->name,"-lcsimple",NULL};
+	vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), "gcc", cmd_args, NULL, NULL, TRUE, TRUE,TRUE);
+}
+
+
+void terminal_box(CSIde_app *app){
+	TerminalBox *tb = (TerminalBox*) g_slice_new(TerminalBox);
+	tb->terminal_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW(tb->terminal_window),app->doc->bin_name);
+	gtk_window_set_default_size (GTK_WINDOW(tb->terminal_window),600,400);
+
+	tb->scrolled_window = gtk_scrolled_window_new (NULL,NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(tb->scrolled_window),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
+	gtk_container_add (GTK_CONTAINER(tb->terminal_window),tb->scrolled_window);
+
+	tb->vte = vte_terminal_new();
+	vte_terminal_set_scrollback_lines(VTE_TERMINAL (tb->vte), -1);
+	vte_terminal_fork_command(VTE_TERMINAL(tb->vte),app->doc->bin_name,NULL, NULL, NULL, TRUE, TRUE,TRUE);	
+	vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL (tb->vte), TRUE);
+	vte_terminal_set_allow_bold (VTE_TERMINAL (tb->vte),TRUE);
+	g_signal_connect(G_OBJECT(tb->terminal_window),"destroy",G_CALLBACK(terminal_window_distroy),(gpointer) tb);
+ 
+	gtk_container_add (GTK_CONTAINER(tb->scrolled_window),tb->vte);
+	gtk_widget_show_all(tb->terminal_window);
+
+}
+
+
+
+
+
+
+
+
+

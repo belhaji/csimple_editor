@@ -31,7 +31,11 @@ void save_file_as(CSIde_app *app);
 
 void quit_app(CSIde_app *app);
 
+gchar* get_bin_name(gchar *filename);
 
+void compile_file(CSIde_app *app);
+
+void terminal_box(CSIde_app *app);
 
 
 #endif /* ACTION_H */
