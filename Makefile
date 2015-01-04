@@ -6,8 +6,8 @@ CFLAGS= `pkg-config --cflags gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
 CLIBS=`pkg-config --libs gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
-csimpleide  :   $(OBJ_FILES)
-	$(CC) -o csimpleide $(OBJ_FILES) $(CFLAGS) $(CLIBS)
+csimple_editor  :   $(OBJ_FILES)
+	$(CC) -o csimple_editor $(OBJ_FILES) $(CFLAGS) $(CLIBS)
 
 main.o		:   main.c
 	   $(CC) -c main.c $(CFLAGS) $(CLIBS)
