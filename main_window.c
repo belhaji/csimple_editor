@@ -21,12 +21,20 @@
 
 
 GtkWidget* main_window_new(void){
-	GtkWidget *icon = gtk_image_new_from_file ("csimple.png");
 	GtkWidget *window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(window),APP_NAME);
 	gtk_window_set_default_size (GTK_WINDOW(window),800,600);
-	gtk_window_set_icon(GTK_WINDOW(window),gtk_image_get_pixbuf(GTK_IMAGE(icon)));
-	gtk_window_set_default_icon(gtk_image_get_pixbuf(GTK_IMAGE(icon))); 
+	if (g_file_test (APP_DIR"csimple.png",G_FILE_TEST_EXISTS))
+	{
+		GtkWidget *icon = gtk_image_new_from_file (APP_DIR"csimple.png");
+		gtk_window_set_icon(GTK_WINDOW(window),gtk_image_get_pixbuf(GTK_IMAGE(icon)));
+		gtk_window_set_default_icon(gtk_image_get_pixbuf(GTK_IMAGE(icon))); 
+			
+	}else if (g_file_test ("csimple.png",G_FILE_TEST_EXISTS)){
+		GtkWidget *icon = gtk_image_new_from_file ("csimple.png");
+		gtk_window_set_icon(GTK_WINDOW(window),gtk_image_get_pixbuf(GTK_IMAGE(icon)));
+		gtk_window_set_default_icon(gtk_image_get_pixbuf(GTK_IMAGE(icon))); 
+	}
 
 
 	return window;

@@ -27,7 +27,7 @@
 
 /* define the application infos */
 
-#define APP_NAME	 "CSimpleIDE"
+#define APP_NAME	 "csimple_editor"
 
 #define APP_VERSION	 "0.1"
 
