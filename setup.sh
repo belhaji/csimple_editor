@@ -22,7 +22,27 @@ function compile()
 }
 
 
+L_VTE=`pkg-config vte-2.90 ; echo $?`
+L_GTK3=`pkg-config gtk+-3.0 ; echo $?`
+L_GTKSV=`pkg-config gtksourceview-3.0 ; echo $?`
 USER=`id -u`
+
+if [ $L_VTE != 0 ] 
+  then
+    echo -e "vte-2.90 library not found try to install it before"
+    exit 1
+fi
+if [ $L_GTK3 != 0 ] 
+  then
+    echo -e "gtk+-3.0 library not found try to install it before"
+    exit 1
+fi
+
+if [ $L_GTKSV != 0 ] 
+  then
+    echo -e "gtksourceview-3.0 library not found try to install it before"
+    exit 1
+fi
 
 if [ $USER != 0 ] 
   then

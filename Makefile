@@ -40,6 +40,7 @@ terminal.o	:   terminal.c
 	   $(CC) -c terminal.c $(CFLAGS) $(CLIBS)
 
 install 	:
+	rm -rf /usr/share/cside/
 	mkdir /usr/share/cside/
 	cp -f csimple.png /usr/share/cside/
 	cp -f csimple_editor.desktop /usr/share/applications/
