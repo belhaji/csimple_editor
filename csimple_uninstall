@@ -1,0 +1,14 @@
+#!/bin/bash
+
+USER=`id -u`
+
+if [ $USER != 0 ] 
+  then
+    echo -e "Permission denied: \n\t this operation need root privileges please use sudo $0"
+    exit 1
+fi
+
+rm -rf /usr/share/scide/
+rm -rf /usr/share/applications/csimple_editor.desktop
+rm -rf /usr/bin/csimple_editor 
+rm -rf /usr/share/gtksourceview-3.0/language-specs/csimple.lang 

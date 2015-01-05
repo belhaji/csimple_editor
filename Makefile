@@ -39,5 +39,13 @@ search_box.o	:   search_box.c
 terminal.o	:   terminal.c
 	   $(CC) -c terminal.c $(CFLAGS) $(CLIBS)
 
+install 	:
+	mkdir /usr/share/cside
+	cp -f csimple.png /usr/share/cside/
+	cp -f csimple_editor.desktop /usr/share/applications/
+	cp -f csimple_editor /usr/bin/	
+	cp -f csimple_uninstall /usr/bin/	
+	cp -f csimple.lang /usr/share/gtksourceview-3.0/language-specs/	
+
 clean : 
 	rm -rf *.o

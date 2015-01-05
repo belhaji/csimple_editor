@@ -1,0 +1,19 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=C Simple Editor
+GenericName=c simple editor
+Comment=Edit text files
+Exec=csimple_editor
+Terminal=false
+Type=Application
+StartupNotify=true
+MimeType=text/plain;
+Icon=/usr/share/cside/csimple.png
+Categories=Development;IDE;GTK;
+
+[Desktop Action Window]
+Name=Open a New Window
+
+[Desktop Action Document]
+Name=Open a New Document
+Exec=csimple_editor
