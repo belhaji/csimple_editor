@@ -24,11 +24,13 @@
 void menu_item_new_clicked(GtkWidget *wid,gpointer data)
 {
 	new_file((CSIde_app*) data);
+	update_title((CSIde_app*) data);
 }
 
 void menu_item_open_clicked(GtkWidget *wid,gpointer data)
 {
 	open_file((CSIde_app*)data);
+	update_title((CSIde_app*) data);
 }
 
 void menu_item_save_clicked(GtkWidget *wid,gpointer data)
@@ -38,10 +40,12 @@ void menu_item_save_clicked(GtkWidget *wid,gpointer data)
 		save_file(app);
 	else
 		save_file_as(app);
+	update_title(app);
 }
 
 void menu_item_save_as_clicked(GtkWidget *wid,gpointer data){
 	save_file_as((CSIde_app*) data);
+	update_title((CSIde_app*) data);
 }
 
 void menu_item_quit_clicked(GtkWidget *item,gpointer data){
@@ -265,6 +269,7 @@ gboolean mainWindowDeleteEvent(GtkWidget *wid,GdkEvent  *e,gpointer data)
 void buffer_changed(GtkWidget *wid,gpointer data){
 	CSIde_app *app= (CSIde_app*) data;
 	app->doc->isSaved = FALSE;
+	update_title(app);
 }
 
 void vte_child_exited(GtkWidget *vte,gpointer data){
@@ -281,6 +286,8 @@ void terminal_window_distroy(GtkWidget *wid,gpointer data){
 	gtk_widget_destroy(tb->scrolled_window);
 	gtk_widget_destroy(tb->terminal_window);
 }
+
+
 
 
 

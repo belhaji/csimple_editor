@@ -84,25 +84,7 @@ typedef struct {
 
 CSIde_app *cside_app_new(void);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void cside_app_frees(CSIde_app *app);
 
 
 

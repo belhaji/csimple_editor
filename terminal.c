@@ -21,7 +21,7 @@
 
 
 Terminal * main_terminal_new(CSIde_app *app){
-	Terminal *terminal;
+	Terminal *terminal  = (Terminal*) g_slice_new(Terminal);
 	terminal->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (terminal->scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	terminal->vte = vte_terminal_new();

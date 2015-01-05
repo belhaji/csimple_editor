@@ -41,6 +41,7 @@ void new_file(CSIde_app *app){
 				{   
 					save_file_as(app);
 					gtk_text_buffer_delete(buffer,&iStart,&iEnd);
+
 				}	
 				else
 				{
@@ -62,11 +63,20 @@ void new_file(CSIde_app *app){
 		gtk_text_buffer_delete(buffer,&iStart,&iEnd);
 	}
 		
+	if (app->doc->name != NULL )
+	{
+		g_free(app->doc->name);
+	}
+	if (app->doc->bin_name != NULL)
+	{
+		g_free(app->doc->bin_name);	
+	}
 	app->doc->isSaved	= FALSE;
 	app->doc->name		= NULL;
 	app->doc->bin_name	= NULL;
 	app->doc->isOnDisk	= FALSE;
-
+	g_free(text);
+	//wgtk_source_buffer_end_not_undoable_action (app->editor->buffer);
 }
 
 void open_file(CSIde_app *app){
@@ -96,7 +106,7 @@ void open_file(CSIde_app *app){
 		
 		gtk_widget_destroy (msgDialog);
 	}
-	gchar *fileName;
+	gchar *fileName = NULL;
 	gchar *text = NULL;
 	GError *error;
 	gsize  lenText;
@@ -118,6 +128,14 @@ void open_file(CSIde_app *app){
 	{
 		case GTK_RESPONSE_OK:
 			fileName		= gtk_file_chooser_get_filename (GTK_FILE_CHOOSER(dialog));
+			if (app->doc->name != NULL )
+			{
+				g_free(app->doc->name);
+			}
+			if (app->doc->bin_name != NULL)
+			{
+				g_free(app->doc->bin_name);	
+			}
 			app->doc->name	= fileName;
 			app->doc->bin_name = get_bin_name(fileName);
 			g_file_get_contents(fileName,&text,&lenText,&error);
@@ -128,7 +146,7 @@ void open_file(CSIde_app *app){
 			}
 			gtk_text_buffer_set_text (buffer,text,(gint)lenText);
 
-			app->doc->isSaved		= TRUE;
+			app->doc->isSaved	= TRUE;
 			app->doc->isOnDisk	= TRUE;
 			g_free (text);
 		default:
@@ -202,6 +220,7 @@ void quit_app(CSIde_app *app){
 
 	if(app->doc->isSaved == FALSE && strlen(text) != 0 )  
 	{
+		g_free(text);
 		GtkWidget * msgDialog;
 		msgDialog = gtk_message_dialog_new(GTK_WINDOW(app->main_window),
 		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
@@ -281,7 +300,23 @@ void terminal_box(CSIde_app *app){
 
 
 
+void update_title(CSIde_app *app){
+	gchar *title = (gchar*) g_malloc(sizeof(gchar) * 100);
+	if (title != NULL)
+	{
+		if(app->doc->isSaved)
+			g_sprintf(title,"%s(%s)",APP_NAME,g_path_get_basename(app->doc->name));
+		else{
+			if (app->doc->isOnDisk)
+				g_sprintf(title,"%s(%s*)",APP_NAME,g_path_get_basename(app->doc->name));
+			else
+				g_sprintf(title,"%s(%s*)",APP_NAME,"Untitled");
+		}
+		gtk_window_set_title (GTK_WINDOW(app->main_window),title);
+		g_free(title);
+	}
 
+}
 
 
 

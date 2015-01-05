@@ -71,6 +71,7 @@ void search_box(CSIde_app *app){
 	switch(gtk_dialog_run(GTK_DIALOG(search_dialog))){
 		case GTK_RESPONSE_CANCEL :
 			gtk_widget_destroy(search_dialog);
+			g_slice_free(SearchBox,search);
 			break;
 
 	}

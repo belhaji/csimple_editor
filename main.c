@@ -54,6 +54,8 @@ int main(int argc,char **argv){
 	gtk_container_add (GTK_CONTAINER(app->main_window),main_hpaned);
 	gtk_widget_show_all (app->main_window);
 	gtk_main ();
+	if(app != NULL)
+		cside_app_free(app);
 	return 0;
 }
 

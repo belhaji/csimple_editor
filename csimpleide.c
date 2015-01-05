@@ -21,14 +21,24 @@
 
 CSIde_app *cside_app_new(void){
 	CSIde_app *app  = (CSIde_app*)  g_slice_new(CSIde_app);
-	Editor *editor  = (Editor*) g_slice_new(Editor);
 	Document *doc  = (Document*) g_slice_new(Document);
-	Terminal *terminal  = (Terminal*) g_slice_new(Terminal);
-	app->editor = editor;
 	doc->name   = NULL;
 	doc->isSaved	= FALSE;
 	doc->isOnDisk   = FALSE;
 	app->doc	= doc;
-	app->terminal = terminal;
 	return app;
 }
+
+void cside_app_free(CSIde_app *app){
+	if (app->editor != NULL)
+		g_slice_free(Editor,app->editor);
+	if (app->doc != NULL)
+		g_slice_free(Document,app->doc);
+	if (app->terminal != NULL)
+		g_slice_free(Terminal,app->terminal);
+	if (app  != NULL)
+		g_slice_free(CSIde_app,app);
+
+}
+
+

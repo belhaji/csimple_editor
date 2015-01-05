@@ -37,6 +37,8 @@ void compile_file(CSIde_app *app);
 
 void terminal_box(CSIde_app *app);
 
+void update_title(CSIde_app *app); 
+
 
 #endif /* ACTION_H */
 
