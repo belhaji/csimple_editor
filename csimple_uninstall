@@ -8,7 +8,8 @@ if [ $USER != 0 ]
     exit 1
 fi
 
-rm -rf /usr/share/scide/
+rm -rf /usr/share/cside/
 rm -rf /usr/share/applications/csimple_editor.desktop
 rm -rf /usr/bin/csimple_editor 
+rm -rf /usr/bin/csimple_uninstall
 rm -rf /usr/share/gtksourceview-3.0/language-specs/csimple.lang 
