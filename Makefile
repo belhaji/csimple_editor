@@ -2,7 +2,7 @@ OBJ_FILES=csimpleide.o main_window.o main.o callback.o main_menu.o main_tool_bar
 
 CC=gcc
 
-CFLAGS=-g `pkg-config --cflags gtk+-3.0 gtksourceview-3.0 vte-2.90`
+CFLAGS=-w `pkg-config --cflags gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
 CLIBS=`pkg-config --libs gtk+-3.0 gtksourceview-3.0 vte-2.90`
 
