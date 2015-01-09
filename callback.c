@@ -115,18 +115,26 @@ void menu_item_deselect_clicked(GtkWidget *wid,gpointer data){
 
 void menu_item_to_upper_clicked(GtkWidget *wid,gpointer data){
 	CSIde_app *app = (CSIde_app*) data;
+	gchar *text;
 	GtkTextIter iStart,iEnd;
 	GtkTextBuffer *buffer   = GTK_TEXT_BUFFER(app->editor->buffer);
 	gtk_text_buffer_get_selection_bounds(buffer,&iStart,&iEnd);
-	gtk_source_buffer_change_case (app->editor->buffer,1,&iStart,&iEnd);
+	text = gtk_text_buffer_get_text (buffer,&iStart,&iEnd,FALSE);
+	g_utf8_strup (text,-1);
+	gtk_text_buffer_delete (buffer,&iStart,&iEnd);
+	gtk_text_buffer_insert (buffer,&iStart,g_utf8_strup(text,-1),-1);	
 }
 
 void menu_item_to_lower_clicked(GtkWidget *wid,gpointer data){
 	CSIde_app *app = (CSIde_app*) data;
+	gchar *text;
 	GtkTextIter iStart,iEnd;
 	GtkTextBuffer *buffer   = GTK_TEXT_BUFFER(app->editor->buffer);
 	gtk_text_buffer_get_selection_bounds(buffer,&iStart,&iEnd);
-	gtk_source_buffer_change_case (app->editor->buffer,0,&iStart,&iEnd);
+	text = gtk_text_buffer_get_text (buffer,&iStart,&iEnd,FALSE);
+	g_utf8_strup (text,-1);
+	gtk_text_buffer_delete (buffer,&iStart,&iEnd);
+	gtk_text_buffer_insert (buffer,&iStart,g_utf8_strdown(text,-1),-1);
 
 }
 
@@ -160,7 +168,7 @@ void menu_item_execute_clicked(GtkWidget *wid,gpointer data){
 	}else{
 		GtkWidget * msgDialog;
 		msgDialog = gtk_message_dialog_new(GTK_WINDOW(app->main_window),
-		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
+		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
 		                                   GTK_MESSAGE_WARNING,
 		                                   GTK_BUTTONS_OK,
 		                                   "Make sure that your file is compiled",

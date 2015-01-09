@@ -223,7 +223,7 @@ void quit_app(CSIde_app *app){
 		g_free(text);
 		GtkWidget * msgDialog;
 		msgDialog = gtk_message_dialog_new(GTK_WINDOW(app->main_window),
-		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL | GTK_DIALOG_USE_HEADER_BAR,
+		                                   GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
 		                                   GTK_MESSAGE_WARNING,
 		                                   GTK_BUTTONS_YES_NO,
 		                                   "Do you want save your file ?",
