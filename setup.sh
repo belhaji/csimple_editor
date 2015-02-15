@@ -22,7 +22,7 @@ function compile()
 }
 
 
-L_VTE=`pkg-config vte-2.90 ; echo $?`
+L_VTE=`pkg-config vte-2.90; echo $?`
 L_GTK3=`pkg-config gtk+-3.0 ; echo $?`
 L_GTKSV=`pkg-config gtksourceview-3.0 ; echo $?`
 USER=`id -u`

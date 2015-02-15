@@ -271,12 +271,24 @@ gchar* get_bin_name(gchar *filename){
 }
 
 void compile_file(CSIde_app *app){
-	gchar *cmd_args[] = {"gcc","-o",app->doc->bin_name,app->doc->name,"-lcsimple",NULL};
-	vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), "gcc", cmd_args, NULL, NULL, TRUE, TRUE,TRUE);
+	//gchar *cmd_args[] = {"gcc","-o",app->doc->bin_name,app->doc->name,"-lcsimple",NULL};
+	char **argv;
+	char *cmd = (char*)g_malloc(sizeof(char)*(strlen(app->doc->bin_name))*2 +20 );
+	if (cmd != NULL)
+	{
+		g_sprintf(cmd,"/bin/gcc -o %s %s -lcsimple",app->doc->bin_name,app->doc->name);
+		//vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), "gcc", cmd_args, NULL, NULL, TRUE, TRUE,TRUE);
+	    g_shell_parse_argv(cmd, NULL, &argv, NULL);
+		vte_terminal_fork_command_full(VTE_TERMINAL(app->terminal->vte), 0, NULL, argv, NULL, 0, NULL, NULL, NULL, NULL);
+		g_strfreev(argv);
+		g_free(cmd);	
+	}
 }
 
 
 void terminal_box(CSIde_app *app){
+	char **argv ;
+
 	TerminalBox *tb = (TerminalBox*) g_slice_new(TerminalBox);
 	tb->terminal_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW(tb->terminal_window),app->doc->bin_name);
@@ -288,7 +300,12 @@ void terminal_box(CSIde_app *app){
 
 	tb->vte = vte_terminal_new();
 	vte_terminal_set_scrollback_lines(VTE_TERMINAL (tb->vte), -1);
-	vte_terminal_fork_command(VTE_TERMINAL(tb->vte),app->doc->bin_name,NULL, NULL, NULL, TRUE, TRUE,TRUE);	
+	
+	//vte_terminal_fork_command(VTE_TERMINAL(tb->vte),app->doc->bin_name,NULL, NULL, NULL, TRUE, TRUE,TRUE);	
+    g_shell_parse_argv(app->doc->bin_name, NULL, &argv, NULL);
+	vte_terminal_fork_command_full(VTE_TERMINAL(tb->vte), 0, NULL, argv, NULL, 0, NULL, NULL, NULL, NULL);
+	g_strfreev(argv);	
+	
 	vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL (tb->vte), TRUE);
 	vte_terminal_set_allow_bold (VTE_TERMINAL (tb->vte),TRUE);
 	g_signal_connect(G_OBJECT(tb->terminal_window),"destroy",G_CALLBACK(terminal_window_distroy),(gpointer) tb);

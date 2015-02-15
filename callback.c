@@ -282,8 +282,11 @@ void buffer_changed(GtkWidget *wid,gpointer data){
 
 void vte_child_exited(GtkWidget *vte,gpointer data){
 	CSIde_app *app= (CSIde_app*) data;
-	vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
-
+	char **argv;
+	//vte_terminal_fork_command(VTE_TERMINAL(app->terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
+	g_shell_parse_argv("/bin/bash", NULL, &argv, NULL);
+	vte_terminal_fork_command_full(VTE_TERMINAL(app->terminal->vte), 0, NULL, argv, NULL, 0, NULL, NULL, NULL, NULL);
+	g_strfreev(argv);
 }
 
 

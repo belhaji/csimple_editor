@@ -21,12 +21,17 @@
 
 
 Terminal * main_terminal_new(CSIde_app *app){
+	char **argv;
 	Terminal *terminal  = (Terminal*) g_slice_new(Terminal);
 	terminal->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (terminal->scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	terminal->vte = vte_terminal_new();
 	vte_terminal_set_scrollback_lines(VTE_TERMINAL (terminal->vte), -1);
-	vte_terminal_fork_command(VTE_TERMINAL(terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
+	//vte_terminal_fork_command(VTE_TERMINAL(terminal->vte), NULL, NULL, NULL, NULL, TRUE, TRUE,TRUE);
+	g_shell_parse_argv("/bin/bash", NULL, &argv, NULL);
+	vte_terminal_fork_command_full(VTE_TERMINAL(terminal->vte), 0, NULL, argv, NULL, 0, NULL, NULL, NULL, NULL);
+	g_strfreev(argv);
+	
 	vte_terminal_set_scroll_on_keystroke(VTE_TERMINAL (terminal->vte), TRUE);
 	vte_terminal_set_allow_bold (VTE_TERMINAL (terminal->vte),TRUE);
 	g_signal_connect(G_OBJECT(terminal->vte), "child-exited",G_CALLBACK(vte_child_exited),(gpointer) app);
